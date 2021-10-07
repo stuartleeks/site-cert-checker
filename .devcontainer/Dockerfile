@@ -28,3 +28,5 @@ RUN /tmp/azure-cli.sh
 # bicep
 COPY scripts/bicep.sh /tmp/
 RUN /tmp/bicep.sh
+
+RUN sudo apt-get -y install figlet

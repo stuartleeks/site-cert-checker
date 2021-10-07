@@ -100,3 +100,5 @@ __queuestorage__
 
 # include bicep output
 !deploy/out
+
+build-output
