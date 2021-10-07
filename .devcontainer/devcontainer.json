@@ -17,6 +17,9 @@
 					"interactive"
 				]
 			},
+			"azbrowse": {
+				"path": "azbrowse"
+			},
 		}
 	},
 

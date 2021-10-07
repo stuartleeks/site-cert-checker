@@ -30,3 +30,7 @@ COPY scripts/bicep.sh /tmp/
 RUN /tmp/bicep.sh
 
 RUN sudo apt-get -y install figlet
+
+# azbrowse
+COPY scripts/azbrowse.sh /tmp/
+RUN /tmp/azbrowse.sh
