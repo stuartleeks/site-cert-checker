@@ -71,6 +71,10 @@ resource functionApp 'Microsoft.Web/sites@2020-06-01' = {
           name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
           value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${listKeys(storageAccount.id, storageAccount.apiVersion).keys[0].value}'
         }
+        {
+          name: 'WEBSITE_RUN_FROM_PACKAGE'
+          value: 'https://github.com/stuartleeks/site-cert-checker/releases/latest/download/functions.zip'
+        }
       ]
     }
   }

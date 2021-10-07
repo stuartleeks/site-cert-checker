@@ -8,7 +8,7 @@ mkdir -p "$script_dir/../build-output"
 figlet Functions
 cd functions
 yarn
-
+yarn run build
 zip -r "$script_dir/../build-output/functions.zip" . -x local.*
 
 
