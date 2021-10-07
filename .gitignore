@@ -97,3 +97,6 @@ local.settings.json
 __azurite_*
 __blobstorage__
 __queuestorage__
+
+# include bicep output
+!deploy/out

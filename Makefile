@@ -8,4 +8,7 @@ trigger-function: ## manually trigger the function locally
 	curl -H "Content-Type:application/json" -d "{}" http://localhost:7071/admin/functions/CheckSites
 
 run: ## run the function locally
-	yarn run start
+	cd functions && yarn run start
+
+bicep-build: 
+	bicep build deploy/src/main.bicep --outdir deploy/out
