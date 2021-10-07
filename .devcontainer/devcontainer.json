@@ -36,5 +36,5 @@
 	"remoteUser": "node",
 	"mounts": [
 		"source=site-cert-checker-azure-cli,target=/home/node/.azure",
-		"source=site-cert-checker-bashhistory,target=/home/vscode/commandhistory",
+		"source=site-cert-checker-bashhistory,target=/home/node/commandhistory",
 	],}
