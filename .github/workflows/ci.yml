@@ -15,6 +15,8 @@ on:
 jobs:  
   build:
     runs-on: ubuntu-18.04
+    env:
+      VERSION: 0.1.${{ github.run_id }}
 
     steps:
     - uses: actions/checkout@v2
@@ -52,5 +54,43 @@ jobs:
       name: Create Function zip Artifact
       with:
         name: functions
-        path: ./build-output/functions
+        path: ./build-output/functions.zip
         if-no-files-found: error 
+
+    - name: Create Release
+      id: create_release
+      if: github.ref == 'refs/heads/main' # only create release on `main`
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ env.VERSION  }}
+        release_name: Release v${{ env.VERSION }}
+        draft: false
+        prerelease: true
+
+    - name: Create Major/Minor tag
+      id: create_tag_verison
+      if: github.ref == 'refs/heads/main' # only create release on `main`
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        VERSION: v${{ env.VERSION }}
+      run: |
+        echo "VERSION: $VERSION"
+        # sudo chown -R $(whoami) .
+        git config user.name "CI build"
+        git config user.email stuart@leeks.net
+        git tag -fa $VERSION -m $VERSION
+        git push -f origin $VERSION
+
+    - name: Upload Release Asset
+      id: upload-release-asset 
+      if: github.ref == 'refs/heads/main' # only create release on `main`
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: ./build-output/functions.zip
+        asset_name: functions.zip
+        asset_content_type: application/zip
