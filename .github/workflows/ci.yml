@@ -52,5 +52,5 @@ jobs:
       name: Create Function zip Artifact
       with:
         name: functions
-        path: ./build-output/functions.zip
+        path: ./build-output/functions
         if-no-files-found: error 
