@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.613.9944",
-      "templateHash": "289782387868809704"
+      "templateHash": "145934174258866376"
     }
   },
   "parameters": {
@@ -15,6 +15,19 @@
     "location": {
       "type": "string",
       "defaultValue": "[resourceGroup().location]"
+    },
+    "sitesToCheck": {
+      "type": "string",
+      "metadata": {
+        "description": "A list of pipe (|) separated hostnames to check"
+      }
+    },
+    "expiryGraceDays": {
+      "type": "int",
+      "defaultValue": 7,
+      "metadata": {
+        "description": "The number of days prior to expiry to allow before warning"
+      }
     }
   },
   "functions": [],
@@ -99,6 +112,14 @@
             {
               "name": "WEBSITE_RUN_FROM_PACKAGE",
               "value": "https://github.com/stuartleeks/site-cert-checker/releases/latest/download/functions.zip"
+            },
+            {
+              "name": "SitesToCheck",
+              "value": "[parameters('sitesToCheck')]"
+            },
+            {
+              "name": "ExpiryGraceDays",
+              "value": "[string(parameters('expiryGraceDays'))]"
             }
           ]
         }

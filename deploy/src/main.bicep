@@ -1,5 +1,9 @@
 param funcName string
 param location string = resourceGroup().location
+@description('A list of pipe (|) separated hostnames to check') 
+param sitesToCheck string
+@description('The number of days prior to expiry to allow before warning')
+param expiryGraceDays int = 7
 
 // storage accounts must be between 3 and 24 characters in length and use numbers and lower-case letters only
 var storageAccountName = '${replace(substring(funcName, 0, 10), '-', '')}${uniqueString(resourceGroup().id)}' 
@@ -74,6 +78,14 @@ resource functionApp 'Microsoft.Web/sites@2020-06-01' = {
         {
           name: 'WEBSITE_RUN_FROM_PACKAGE'
           value: 'https://github.com/stuartleeks/site-cert-checker/releases/latest/download/functions.zip'
+        }
+        {
+          name: 'SitesToCheck'
+          value: sitesToCheck
+        }
+        {
+          name: 'ExpiryGraceDays'
+          value: string(expiryGraceDays)
         }
       ]
     }
