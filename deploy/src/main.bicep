@@ -1,12 +1,13 @@
 @description('Base name to use for the deployment')
 param baseName string = 'site-cert-checker'
 @description('A list of pipe (|) separated hostnames to check')
-param sitesToCheck string
+param sitesToCheck string = 'example.com|another.example.com'
 @description('The number of days prior to expiry to allow before warning')
 param expiryGraceDays int = 7
 @description('The email address to send expiry notifications to')
 param emailAddress string
-param location string = resourceGroup().location
+
+var location = resourceGroup().location
 
 // storage accounts must be between 3 and 24 characters in length and use numbers and lower-case letters only
 var storageAccountName = '${replace(substring(baseName, 0, 10), '-', '')}${uniqueString(resourceGroup().id)}'
