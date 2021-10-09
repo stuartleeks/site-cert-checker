@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.613.9944",
-      "templateHash": "13168821230295848802"
+      "templateHash": "15471993051377922541"
     }
   },
   "parameters": {
@@ -30,10 +30,10 @@
         "description": "The number of days prior to expiry to allow before warning"
       }
     },
-    "emailAddress": {
+    "emailAddressToNotify": {
       "type": "string",
       "metadata": {
-        "description": "The email address to send expiry notifications to"
+        "description": "The email address to send notifications to when there are certificate issues/warnings"
       }
     }
   },
@@ -45,7 +45,7 @@
     "appInsightsName": "[format('{0}{1}', parameters('baseName'), uniqueString(resourceGroup().id))]",
     "functionAppName": "[format('{0}{1}', parameters('baseName'), uniqueString(resourceGroup().id))]",
     "logicAppName": "[format('{0}{1}', parameters('baseName'), uniqueString(resourceGroup().id))]",
-    "workflow": "[json(replace('{\n\t\"definition\": {\n\t\t\"$schema\": \"https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#\",\n\t\t\"actions\": {\n\t\t\t\"Response\": {\n\t\t\t\t\"inputs\": {\n\t\t\t\t\t\"statusCode\": 200\n\t\t\t\t},\n\t\t\t\t\"kind\": \"Http\",\n\t\t\t\t\"runAfter\": {\n\t\t\t\t\t\"Send_an_email_(V2)\": [\n\t\t\t\t\t\t\"Succeeded\"\n\t\t\t\t\t]\n\t\t\t\t},\n\t\t\t\t\"type\": \"Response\"\n\t\t\t},\n\t\t\t\"Send_an_email_(V2)\": {\n\t\t\t\t\"inputs\": {\n\t\t\t\t\t\"body\": {\n\t\t\t\t\t\t\"Body\": \"<p>Site: <a href=\\\"https://@{triggerBody()?[''site'']}\\\">@{triggerBody()?[''site'']}</a></p><p>ValidFrom: @{triggerBody()?[''validFrom'']}</p><p>ValidTo: @{triggerBody()?[''validTo'']}</p><p>Message: @{triggerBody()?[''message'']}</p>\",\n\t\t\t\t\t\t\"Subject\": \"site-cert-checker warning for @{triggerBody()?[''site'']}\",\n\t\t\t\t\t\t\"To\": \"test@example.com\"\n\t\t\t\t\t},\n\t\t\t\t\t\"host\": {\n\t\t\t\t\t\t\"connection\": {\n\t\t\t\t\t\t\t\"name\": \"@parameters(''$connections'')[''office365''][''connectionId'']\"\n\t\t\t\t\t\t}\n\t\t\t\t\t},\n\t\t\t\t\t\"method\": \"post\",\n\t\t\t\t\t\"path\": \"/v2/Mail\"\n\t\t\t\t},\n\t\t\t\t\"runAfter\": {},\n\t\t\t\t\"type\": \"ApiConnection\"\n\t\t\t}\n\t\t},\n\t\t\"contentVersion\": \"1.0.0.0\",\n\t\t\"outputs\": {},\n\t\t\"parameters\": {\n\t\t\t\"$connections\": {\n\t\t\t\t\"defaultValue\": {},\n\t\t\t\t\"type\": \"Object\"\n\t\t\t}\n\t\t},\n\t\t\"triggers\": {\n\t\t\t\"manual\": {\n\t\t\t\t\"inputs\": {\n\t\t\t\t\t\"schema\": {\n\t\t\t\t\t\t\"properties\": {\n\t\t\t\t\t\t\t\"validFrom\": {\n\t\t\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\"validTo\": {\n\t\t\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\"site\": {\n\t\t\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\"message\": {\n\t\t\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"type\": \"object\"\n\t\t\t\t\t}\n\t\t\t\t},\n\t\t\t\t\"kind\": \"Http\",\n\t\t\t\t\"type\": \"Request\"\n\t\t\t}\n\t\t}\n\t},\n\t\"parameters\": {\n\t\t\"$connections\": {\n\t\t\t\"value\": {\n\t\t\t\t\"office365\": {\n\t\t\t\t\t\"connectionId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/site-cert-checker-test/providers/Microsoft.Web/connections/office365\",\n\t\t\t\t\t\"connectionName\": \"office365\",\n\t\t\t\t\t\"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Web/locations/northeurope/managedApis/office365\"\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}', 'test@example.com', parameters('emailAddress')))]"
+    "workflow": "[json(replace('{\n\t\"definition\": {\n\t\t\"$schema\": \"https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#\",\n\t\t\"actions\": {\n\t\t\t\"Response\": {\n\t\t\t\t\"inputs\": {\n\t\t\t\t\t\"statusCode\": 200\n\t\t\t\t},\n\t\t\t\t\"kind\": \"Http\",\n\t\t\t\t\"runAfter\": {\n\t\t\t\t\t\"Send_an_email_(V2)\": [\n\t\t\t\t\t\t\"Succeeded\"\n\t\t\t\t\t]\n\t\t\t\t},\n\t\t\t\t\"type\": \"Response\"\n\t\t\t},\n\t\t\t\"Send_an_email_(V2)\": {\n\t\t\t\t\"inputs\": {\n\t\t\t\t\t\"body\": {\n\t\t\t\t\t\t\"Body\": \"<p>Site: <a href=\\\"https://@{triggerBody()?[''site'']}\\\">@{triggerBody()?[''site'']}</a></p><p>ValidFrom: @{triggerBody()?[''validFrom'']}</p><p>ValidTo: @{triggerBody()?[''validTo'']}</p><p>Message: @{triggerBody()?[''message'']}</p>\",\n\t\t\t\t\t\t\"Subject\": \"site-cert-checker warning for @{triggerBody()?[''site'']}\",\n\t\t\t\t\t\t\"To\": \"test@example.com\"\n\t\t\t\t\t},\n\t\t\t\t\t\"host\": {\n\t\t\t\t\t\t\"connection\": {\n\t\t\t\t\t\t\t\"name\": \"@parameters(''$connections'')[''office365''][''connectionId'']\"\n\t\t\t\t\t\t}\n\t\t\t\t\t},\n\t\t\t\t\t\"method\": \"post\",\n\t\t\t\t\t\"path\": \"/v2/Mail\"\n\t\t\t\t},\n\t\t\t\t\"runAfter\": {},\n\t\t\t\t\"type\": \"ApiConnection\"\n\t\t\t}\n\t\t},\n\t\t\"contentVersion\": \"1.0.0.0\",\n\t\t\"outputs\": {},\n\t\t\"parameters\": {\n\t\t\t\"$connections\": {\n\t\t\t\t\"defaultValue\": {},\n\t\t\t\t\"type\": \"Object\"\n\t\t\t}\n\t\t},\n\t\t\"triggers\": {\n\t\t\t\"manual\": {\n\t\t\t\t\"inputs\": {\n\t\t\t\t\t\"schema\": {\n\t\t\t\t\t\t\"properties\": {\n\t\t\t\t\t\t\t\"validFrom\": {\n\t\t\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\"validTo\": {\n\t\t\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\"site\": {\n\t\t\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\"message\": {\n\t\t\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"type\": \"object\"\n\t\t\t\t\t}\n\t\t\t\t},\n\t\t\t\t\"kind\": \"Http\",\n\t\t\t\t\"type\": \"Request\"\n\t\t\t}\n\t\t}\n\t},\n\t\"parameters\": {\n\t\t\"$connections\": {\n\t\t\t\"value\": {\n\t\t\t\t\"office365\": {\n\t\t\t\t\t\"connectionId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/site-cert-checker-test/providers/Microsoft.Web/connections/office365\",\n\t\t\t\t\t\"connectionName\": \"office365\",\n\t\t\t\t\t\"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Web/locations/northeurope/managedApis/office365\"\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}', 'test@example.com', parameters('emailAddressToNotify')))]"
   },
   "resources": [
     {
@@ -79,7 +79,7 @@
       "name": "[format('{0}-office365', variables('logicAppName'))]",
       "location": "[variables('location')]",
       "properties": {
-        "displayName": "[parameters('emailAddress')]",
+        "displayName": "[parameters('emailAddressToNotify')]",
         "api": {
           "name": "office365",
           "brandColor": "#0078D4",

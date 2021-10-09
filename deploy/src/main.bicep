@@ -4,8 +4,8 @@ param baseName string = 'site-cert-checker'
 param sitesToCheck string = 'example.com|another.example.com'
 @description('The number of days prior to expiry to allow before warning')
 param expiryGraceDays int = 7
-@description('The email address to send expiry notifications to')
-param emailAddress string
+@description('The email address to send notifications to when there are certificate issues/warnings')
+param emailAddressToNotify string
 
 var location = resourceGroup().location
 
@@ -44,7 +44,7 @@ resource logicAppO365Connection 'Microsoft.Web/connections@2016-06-01' = {
   name: '${logicAppName}-office365'
   location: location
   properties: {
-    displayName: emailAddress
+    displayName: emailAddressToNotify
     api: {
       name: 'office365'
       brandColor: '#0078D4'
@@ -60,7 +60,7 @@ resource logicAppO365Connection 'Microsoft.Web/connections@2016-06-01' = {
 // Load the workflow from JSON file
 // This can be exported
 // NOTE: parameters/connections need to be manually updated below
-var workflow = json(replace(loadTextContent('workflow.json'), 'test@example.com', emailAddress))
+var workflow = json(replace(loadTextContent('workflow.json'), 'test@example.com', emailAddressToNotify))
 
 resource logicApp 'Microsoft.Logic/workflows@2019-05-01' = {
   name: logicAppName
