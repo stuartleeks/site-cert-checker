@@ -1,0 +1,81 @@
+{
+	"definition": {
+		"$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+		"actions": {
+			"Response": {
+				"inputs": {
+					"statusCode": 200
+				},
+				"kind": "Http",
+				"runAfter": {
+					"Send_an_email_(V2)": [
+						"Succeeded"
+					]
+				},
+				"type": "Response"
+			},
+			"Send_an_email_(V2)": {
+				"inputs": {
+					"body": {
+						"Body": "<p>Site: <a href=\"https://@{triggerBody()?['site']}\">@{triggerBody()?['site']}</a></p><p>ValidFrom: @{triggerBody()?['validFrom']}</p><p>ValidTo: @{triggerBody()?['validTo']}</p><p>Message: @{triggerBody()?['message']}</p>",
+						"Subject": "site-cert-checker warning for @{triggerBody()?['site']}",
+						"To": "test@example.com"
+					},
+					"host": {
+						"connection": {
+							"name": "@parameters('$connections')['office365']['connectionId']"
+						}
+					},
+					"method": "post",
+					"path": "/v2/Mail"
+				},
+				"runAfter": {},
+				"type": "ApiConnection"
+			}
+		},
+		"contentVersion": "1.0.0.0",
+		"outputs": {},
+		"parameters": {
+			"$connections": {
+				"defaultValue": {},
+				"type": "Object"
+			}
+		},
+		"triggers": {
+			"manual": {
+				"inputs": {
+					"schema": {
+						"properties": {
+							"validFrom": {
+								"type": "string"
+							},
+							"validTo": {
+								"type": "string"
+							},
+							"site": {
+								"type": "string"
+							},
+							"message": {
+								"type": "string"
+							}
+						},
+						"type": "object"
+					}
+				},
+				"kind": "Http",
+				"type": "Request"
+			}
+		}
+	},
+	"parameters": {
+		"$connections": {
+			"value": {
+				"office365": {
+					"connectionId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/site-cert-checker-test/providers/Microsoft.Web/connections/office365",
+					"connectionName": "office365",
+					"id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Web/locations/northeurope/managedApis/office365"
+				}
+			}
+		}
+	}
+}

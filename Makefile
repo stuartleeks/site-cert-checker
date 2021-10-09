@@ -7,7 +7,13 @@ help: ## show this help
 trigger-function: ## manually trigger the function locally
 	curl -H "Content-Type:application/json" -d "{}" http://localhost:7071/admin/functions/CheckSites
 
-run: ## run the function locally
+function-watch: ## build the function with watcher
+	cd functions && yarn run watch
+
+function-build: ## build the function
+	cd functions && yarn run build
+
+function-run: ## run the function locally
 	cd functions && yarn run start
 
 bicep-build: 
