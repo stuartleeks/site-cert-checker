@@ -13,7 +13,7 @@ var location = resourceGroup().location
 var storageAccountName = '${replace(substring(baseName, 0, 10), '-', '')}${uniqueString(resourceGroup().id)}'
 var functionPlanName = '${baseName}${uniqueString(resourceGroup().id)}'
 var appInsightsName = '${baseName}${uniqueString(resourceGroup().id)}'
-var functionAppName = baseName
+var functionAppName = '${baseName}${uniqueString(resourceGroup().id)}'
 var logicAppName = '${baseName}${uniqueString(resourceGroup().id)}'
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2019-06-01' = {
